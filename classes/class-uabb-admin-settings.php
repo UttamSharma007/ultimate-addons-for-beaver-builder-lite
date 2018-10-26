@@ -42,7 +42,8 @@ final class UABBBuilderAdminSettings {
 		
 		add_action( 'network_admin_menu', __CLASS__ . '::menu' );
 		add_action( 'admin_menu', __CLASS__ . '::menu' );
-			
+		add_action( 'admin_enqueue_scripts', __CLASS__ . '::admin_notice_styles' );
+
 		if ( isset( $_REQUEST['page'] ) && 'uabb-builder-settings' == $_REQUEST['page'] ) {
 			add_action( 'admin_enqueue_scripts', __CLASS__ . '::styles_scripts' );
 			self::save();
@@ -65,6 +66,18 @@ final class UABBBuilderAdminSettings {
 			$func  = __CLASS__ . '::render';
 			add_submenu_page( 'options-general.php', $title, $title, $cap, $slug, $func );
 		}
+	}
+
+	/** 
+	 * Enqueues the needed CSS/JS for the rating notice.
+	 *
+	 * @since 1.3.0
+	 * @return void
+	 */
+	static public function admin_notice_styles( $hook )
+	{
+		wp_register_style( 'uabb-admin-style', BB_ULTIMATE_ADDON_URL . 'assets/css/admin-notice-style.css', array(), BB_ULTIMATE_ADDON_LITE_VERSION );
+		wp_enqueue_style( 'uabb-admin-style');
 	}
 	
 	/** 
